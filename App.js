@@ -3,10 +3,9 @@ import { Text, View, StyleSheet, TextInput, Button, Alert, ScrollView } from 're
 import { useForm, Controller } from 'react-hook-form';
 import Constants from 'expo-constants';
 import { ErrorMessage } from "@hookform/error-message";
-import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import RNPickerSelect, { defaultStyles } from 'react-native-picker-select';
 
 var FormData = [];
-var KeyUser = ["1"]
 
 export default () => {
   const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
@@ -14,6 +13,7 @@ export default () => {
       firstName: '',
       lastName: '',
       email: '',
+      gender: '',
     }
   });
   
@@ -101,6 +101,22 @@ export default () => {
         rules={{ required: true,minLength:13, maxLength:13, pattern: {value: /^[+-]?\d*(?:[.,]\d*)?$/, message:"Bad Number" }}}
       />
 
+    <Text style={styles.label}>Gender</Text>
+    <Controller
+        control={control}
+        render={({field: { onChange, onBlur, value }}) => (
+          <RNPickerSelect
+            onValueChange={(value) => console.log(value)}
+            items={[
+                { label: 'Football', value: 'football' },
+                { label: 'Baseball', value: 'baseball' },
+                { label: 'Hockey', value: 'hockey' },
+            ]}
+        />
+        )}
+        name="gender"
+      />
+
       <View style={styles.button}>
         <Button
           style={styles.buttonInner}
@@ -121,6 +137,16 @@ export default () => {
 };
 
 const styles = StyleSheet.create({
+  pickerSelectStyles:{
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    color: 'white',
+    paddingRight: 30,
+  },
   label: {
     color: 'white',
     margin: 20,
